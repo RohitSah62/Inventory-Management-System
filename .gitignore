@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build outputs & caches
+dist/
+build/
+coverage/
+.nyc_output/
+.vite/
+
+# IDE folders
+.vscode/
+.idea/
+
+# Private certificates & keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs & OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+Desktop.ini
