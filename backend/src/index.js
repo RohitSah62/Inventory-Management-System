@@ -40,9 +40,20 @@ async function bootstrap() {
     console.log(`Inventory FIFO API listening on port ${config.port}`);
   });
 
-  // Start Kafka topic check, producer, and consumer with retry resilience
+  // Start Kafka producer and consumer with retry resilience.
+  // In production, skip ensureTopicExists: the topic must already exist on the
+  // managed broker (Redpanda Cloud / Confluent Cloud). The admin listTopics /
+  // createTopics calls require Cluster-level ACLs that a regular app user does
+  // not hold on managed Kafka services.
   try {
-    await ensureTopicExists(kafka, config.kafka.topic);
+    if (config.nodeEnv !== 'production') {
+      await ensureTopicExists(kafka, config.kafka.topic);
+    } else {
+      console.log(
+        `Production mode: skipping auto-topic creation for "${config.kafka.topic}". ` +
+        'Ensure the topic exists on your managed Kafka cluster.'
+      );
+    }
     await producer.connect();
     await consumer.start();
     console.log(`Kafka consumer listening on topic "${config.kafka.topic}"`);

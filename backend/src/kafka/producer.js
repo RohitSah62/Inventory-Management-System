@@ -1,7 +1,7 @@
 import { config } from '../config/env.js';
 
 export function createKafkaProducer(kafka, topic = config.kafka.topic) {
-  const producer = kafka.producer({ allowAutoTopicCreation: true });
+  const producer = kafka.producer({ allowAutoTopicCreation: false });
   let connected = false;
 
   async function connect() {
